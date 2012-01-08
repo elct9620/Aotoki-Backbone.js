@@ -23,6 +23,6 @@
 
 * [TODO List](#todo-list)
 
-## <a href="javascript:void(0);" name="todo=list">TODO List</a>
+## <a name="todo-list">TODO List</a>
 
 * 1.0 (無儲存，單純 JavaScript) [Download](https://github.com/elct9620/Aotoki-Backbone.js/zipball/todo-list-1.0)
