@@ -25,7 +25,16 @@ $app = new Slim(
 /* Load APP */
 
 /* Home Page */
- 
+
+$app->get('/', function() use ($app){
+	
+	$datas = array(
+		'app' => $app,
+	);
+	
+	$app->render('home.php', $datas);
+});
+
 /* Run Application */
 $app->run();
 ?>
