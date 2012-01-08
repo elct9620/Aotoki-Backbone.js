@@ -18,7 +18,9 @@
 		}
 	</style>
 	<script src="js/jquery-1.7.1.min.js"></script>
+	<script src="js/underscore-min.js"></script>
 	<script src="js/backbone-min.js"></script>
+	<script src="js/bootstrap-twipsy.js"></script>
 	<script>
 		$(function(){
 			var Note = Backbone.Model.extend({
@@ -31,15 +33,38 @@
 			});
 			
 			var TODOView = Backbone.View.extend({
-				el : $('#todo-list'),
+				tagName : 'div',
+				className : 'block-message alert-message info',
+				initialize : function(){
+					this.model.bind('destroy', this.destroy, this);
+				},
+				render : function(event){
+					$(this.el).html('<a href="#" class="close">×</a><p>' + this.model.get('data') + '</p>');
+					return this;
+				},
+				events : {
+					'click .close' : 'clear'
+				},
+				destroy : function(){
+					$(this.el).remove();
+				},
+				clear : function(event){
+					this.model.destroy();
+				}
+			});
+			
+			var AppView = Backbone.View.extend({
+				el : $('#app'),
 				render : function(event){
 					
 				},
 				events : {
-					'submit #todo-add' : 'add'
+					'click #add-note' : 'add'
 				},
 				add : function(event){
-					TODOList.add(new Note());
+					var input = $('input[name=todo]');
+					TODOList.add(new Note({'data' : input.val()}));
+					input.val('');
 				}
 			});
 			
@@ -47,11 +72,16 @@
 				model : Note
 			});
 			
+			var TODOList = new TODOCollection();
+			
 			TODOList.bind('add', function(Note){
-				console.log('New Model Add');	
+				var view = new TODOView({model : Note});
+				$('#todo-list').append(view.render().el);
 			});
 			
-			var TODOList = new TODOCollection();
+			var App = new AppView();
+			
+			$('input[name=todo]').twipsy();
 		});
 	</script>
 </head>
@@ -66,15 +96,16 @@
 				<li><a href="<?php echo $app->request()->getRootUri(); ?>">Home</a></li>
 			</ul>
 		</nav>
-		<div>
-			<form action="" id="todo-add">
-				<input type="text" name="todo" /> <button type="submit" class="btn primary">Add</button>
-			</form>
+		<div id="app">
+			<div>
+				<form action="" id="todo-add" onsubmit="return false;">
+					Something TODO : <input type="text" name="todo" title="Type somethings you want to add into list." /> <button id="add-note" type="submit" class="btn primary">Add</button>
+				</form>
+			</div>
+			<div id="todo-list">
+				
+			</div>
 		</div>
-		<div id="todo-list">
-			
-		</div>
-
 		<footer>
 		 <p>&copy; Copyright by Aotoki</p>
 		</footer>
