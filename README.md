@@ -10,3 +10,19 @@
 * Bootstrap
 * Idiorm (Options)
 
+## 分支解釋
+
+* Master
+	README.md 檔案放置、檢索
+* Develop
+	基礎架構（框架、佈景、JavaScript等）
+* (Others)
+	各種實做的分支 Ex. TODO List
+
+## 實做列表
+
+* [TODO List](#todo-list)
+
+### <a href="javascript:void(0);" name="todo=list">TODO List</a>
+
+* 1.0 (無儲存，單純 JavaScript) [Download](https://github.com/elct9620/Aotoki-Backbone.js/zipball/todo-list-1.0)
