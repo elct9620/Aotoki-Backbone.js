@@ -35,6 +35,19 @@ $app->get('/', function() use ($app){
 	$app->render('home.php', $datas);
 });
 
+$app->get('/api/getList', function() use ($app){
+	
+	$result = array(
+		array('data' => 'Hello World!'),
+		array('data' => 'Are you sure?'),
+	);
+	
+	$app->response()->header('Content-Type', 'application/json');
+	
+	print(json_encode($result));
+	
+});
+
 /* Run Application */
 $app->run();
 ?>

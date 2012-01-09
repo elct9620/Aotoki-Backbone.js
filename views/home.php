@@ -69,7 +69,8 @@
 			});
 			
 			var TODOCollection = Backbone.Collection.extend({
-				model : Note
+				model : Note,
+				url : 'api/getList'
 			});
 			
 			var TODOList = new TODOCollection();
@@ -78,6 +79,17 @@
 				var view = new TODOView({model : Note});
 				$('#todo-list').append(view.render().el);
 			});
+			
+			TODOList.bind('reset', function(eventName){
+				console.log('Reset : ', eventName);
+				_.each(TODOList.models, function(Note){
+					var view = new TODOView({model : Note});
+					$('#todo-list').append(view.render().el);
+				});
+			});
+			
+			TODOList.fetch();
+			console.log(TODOList);
 			
 			var App = new AppView();
 			
