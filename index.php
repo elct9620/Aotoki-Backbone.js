@@ -20,6 +20,10 @@ $app = new Slim(
 		)
 	);
 
+/* Load ORM */
+require_once('lib/idiorm.php');
+require_once('lib/paris.php');
+
 /* Initialize ORM */
 ORM::configure('mysql:host=localhost;dbname=backbone.js');
 ORM::configure('username', 'root');
@@ -27,8 +31,10 @@ ORM::configure('password', 'root');
 ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
 /* Load Models */
+require_once('app/models/Note.php');
 
 /* Load APP */
+require_once('app/api/TODO.php');
 
 /* Home Page */
 
@@ -39,19 +45,6 @@ $app->get('/', function() use ($app){
 	);
 	
 	$app->render('home.php', $datas);
-});
-
-$app->get('/api/getList', function() use ($app){
-	
-	$result = array(
-		array('data' => 'Hello World!'),
-		array('data' => 'Are you sure?'),
-	);
-	
-	$app->response()->header('Content-Type', 'application/json');
-	
-	print(json_encode($result));
-	
 });
 
 /* Run Application */

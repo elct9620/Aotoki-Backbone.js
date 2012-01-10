@@ -29,7 +29,9 @@
 					this.bind('change', function(){
 						console.log('Note has be changed');
 					});
-				}
+				},
+				urlRoot : 'api/note',
+				idAttribute : 'ID',
 			});
 			
 			var TODOView = Backbone.View.extend({
@@ -39,17 +41,42 @@
 					this.model.bind('destroy', this.destroy, this);
 				},
 				render : function(event){
-					$(this.el).html('<a href="#" class="close">×</a><p>' + this.model.get('data') + '</p>');
+					$(this.el).html('<a href="#" class="close">×</a><p>' + this.model.get('data') + '</p><div class="alert-actions"><a href="#" class="btn small edit">Edit</a></div>').fadeIn(1000);
+					$(this.el).children('.alert-actions').hide();
 					return this;
 				},
 				events : {
-					'click .close' : 'clear'
+					'click .close' : 'clear',
+					'click .edit' : 'edit',
+					'mouseover' : 'showEdit',
+					'mouseleave' : 'hiddenEdit'
 				},
 				destroy : function(){
 					$(this.el).remove();
 				},
 				clear : function(event){
 					this.model.destroy();
+				},
+				edit : function(e){
+					console.log('Edit:', e);
+					var note = $(this.el).children('p');
+					if(!this.edited){
+						note.html('<input type="text" value="'+ note.text() +'" />');
+						this.edited = true;
+					}else{
+						var data = note.children('input').val();
+						this.model.set({'data' : data});
+						note.html(data);
+						this.edited = false;
+						this.model.save();
+					}			
+				},
+				showEdit : function(e){
+					$(this.el).children('.alert-actions').show();
+				},
+				hiddenEdit : function(e)
+				{
+					$(this.el).children('.alert-actions').fadeOut();
 				}
 			});
 			
@@ -63,14 +90,15 @@
 				},
 				add : function(event){
 					var input = $('input[name=todo]');
-					TODOList.add(new Note({'data' : input.val()}));
+					var model = new Note({'data' : input.val()});
+					TODOList.create(model);
 					input.val('');
 				}
 			});
 			
 			var TODOCollection = Backbone.Collection.extend({
 				model : Note,
-				url : 'api/getList'
+				url : 'api/note'
 			});
 			
 			var TODOList = new TODOCollection();
@@ -81,7 +109,6 @@
 			});
 			
 			TODOList.bind('reset', function(eventName){
-				console.log('Reset : ', eventName);
 				_.each(TODOList.models, function(Note){
 					var view = new TODOView({model : Note});
 					$('#todo-list').append(view.render().el);
