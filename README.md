@@ -25,5 +25,6 @@
 
 ## <a name="todo-list">TODO List</a>
 
+* 1.2 - MySQL儲存，可以新增、編輯、刪除 ( [Download](https://github.com/elct9620/Aotoki-Backbone.js/zipball/todo-list-1.2) )
 * 1.1 - 無儲存，從PHP RESTFUL API後貒讀取兩筆資料 ( [Download](https://github.com/elct9620/Aotoki-Backbone.js/zipball/todo-list-1.1) )
 * 1.0 - 無儲存，單純 JavaScript ( [Download](https://github.com/elct9620/Aotoki-Backbone.js/zipball/todo-list-1.0) )
